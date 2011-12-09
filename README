@@ -1,2 +1,29 @@
-Bitte lest euch das GIT-Tutorial durch, um ein effizientes Arbeiten zu ermöglichen.
-Und lest es euch GENAU durch ;)!hjhjh
+/* 
+Das ist unsere Platform in der wir Das Java-Projekt für die FH fertigstellen!
+Beachtet, solltet ihr eure Arbeit hochladen, dass ihr vorher guckt ob jemand vor euch etwas in einer Datei verändert hat in der ihr arbeitet.
+Vor dem Hochladen solltet ihr also eure Arbeit mit der neuen Datei zusammenführen um so die Arbeit vom Vorgänger nicht zu überschreiben!
+
+Bitte editiert euren Bereich in der Todo Liste, damit jeder auf dem Laufenden ist wo ihr gerade steht!
+
+### Todo Liste:
+
+Claudio:
+
+~ Kundenpanel: Aufbau des Kundenpanels.
+* Kundenpanel: Funktionen für die Benutzeraktionen einfügen.
+
+Dennis:
+
+~ Bestellungspanel: Aufbau des Bestellungspanels.
+* Bestellungspanel: Funktionen für die Benutzeraktionen einfügen.
+
+
+
+// Legende der Todo Liste:
+// + == Wurde dem Projekt hinzugefügt
+// ~ == An dieser Baustelle im Projekt arbeitet ihr zur Zeit
+// * == Anstehende Arbeiten am Projekt die ihr aber noch nicht begonnen habt.
+// - == Verworfene Arbeiten am Projekt
+
+
+*/
