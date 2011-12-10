@@ -1,10 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
+import javax.swing.ListModel;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
+
+import java.sql.*; // Eingefügt für späteren Gebrauch.
 
 
 /**
@@ -20,10 +24,29 @@ import javax.swing.SwingUtilities;
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
 public class NewJFrame extends javax.swing.JFrame {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L; // Wird gebraucht um ein Warning des Java-Compilers abzustellen.
+
+	{
+		//Set Look & Feel
+		try {
+			javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Erstellen aller benötigten Objekte für die GUI.
+
 	private JPanel upperMainPanel;
-	private JPanel bestellungsPanel;
 	private JPanel kundenPanel;
 	private JPanel lowerMainPanel;
+	private JTabbedPane bestellungsTPane;
+	private JList akt_Bestellungen;
+	private JList vorh_Bestellungen;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -37,12 +60,13 @@ public class NewJFrame extends javax.swing.JFrame {
 			}
 		});
 	}
-	
+
 	public NewJFrame() {
 		super();
+		super.setTitle("Pizzalieferant GUI");
 		initGUI();
 	}
-	
+
 	private void initGUI() {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -60,10 +84,29 @@ public class NewJFrame extends javax.swing.JFrame {
 					upperMainPanel.add(kundenPanel);
 					kundenPanel.setBackground(new java.awt.Color(255,217,120));
 				}
-				{
-					bestellungsPanel = new JPanel();
-					upperMainPanel.add(bestellungsPanel);
-					bestellungsPanel.setBackground(new java.awt.Color(173,216,230));
+				{ 	// Erstellen des Reiter-Panes
+					bestellungsTPane = new JTabbedPane();
+					upperMainPanel.add(bestellungsTPane);
+					{	// Erstellen des Tabs 'Aktuelle Bestellungen:'
+
+						ListModel akt_BesteListe = new DefaultComboBoxModel
+						(new String[] { "Pizza Avanti", "Pizza Alegro" });
+
+						akt_Bestellungen = new JList();
+						bestellungsTPane.addTab("Aktuelle Bestellungen:", null, akt_Bestellungen, null);
+						akt_Bestellungen.setModel(akt_BesteListe);
+						akt_Bestellungen.setSelectedIndex(1);
+					}
+					{	// Erstellen des Tabs 'Vorherige Bestellungen:'
+
+						ListModel vorh_BesteListe = new DefaultComboBoxModel
+						(new String[] { "Pizza Antonio", "Pizza Pasta" });
+
+						vorh_Bestellungen = new JList();
+						bestellungsTPane.addTab("Vorherige Bestellungen:",null, vorh_Bestellungen, null);
+						vorh_Bestellungen.setModel(vorh_BesteListe);
+						vorh_Bestellungen.setSelectedIndex(0);
+					}
 				}
 			}
 			{
