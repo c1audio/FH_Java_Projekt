@@ -14,8 +14,9 @@ Claudio:
 
 Dennis:
 
-~ Bestellungspanel: Aufbau des Bestellungspanels.
 ~ Allgemein: Einbinden der SQL-Schnittstelle und einbauen von Schnittstellen zur GUI.
+
+~ Bestellungspanel: Aufbau des Bestellungspanels.
 * Bestellungspanel: Funktionen für die Benutzeraktionen einfügen.
 
 
