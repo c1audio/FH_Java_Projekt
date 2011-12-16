@@ -6,7 +6,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.ListModel;
 import javax.swing.WindowConstants;
-import javax.swing.SwingUtilities;
 
 import java.sql.*; // Eingefügt für späteren Gebrauch.
 
@@ -25,22 +24,11 @@ import java.sql.*; // Eingefügt für späteren Gebrauch.
 */
 public class NewJFrame extends javax.swing.JFrame {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L; // Wird gebraucht um ein Warning des Java-Compilers abzustellen.
 
-	{
-		//Set Look & Feel
-		try {
-			javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	private static final long serialVersionUID = 1L; // Stellt eine Compilerwarnung ab.
+	
 	// Erstellen aller benötigten Objekte für die GUI.
-
+	
 	private JPanel upperMainPanel;
 	private JPanel kundenPanel;
 	private JPanel lowerMainPanel;
@@ -48,25 +36,43 @@ public class NewJFrame extends javax.swing.JFrame {
 	private JList akt_Bestellungen;
 	private JList vorh_Bestellungen;
 
-	/**
-	* Auto-generated main method to display this JFrame
-	*/
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				NewJFrame inst = new NewJFrame();
-				inst.setLocationRelativeTo(null);
-				inst.setVisible(true);
-			}
-		});
+		new NewJFrame();
 	}
-
+	
+	public void sql_test() {
+		try {
+			// Baue eine neue Instanz des MYSQL-Treibers auf.
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			// Verbinde, mit Hilfe des Treibers, das Programm mit der Datenbank
+			Connection myCon = DriverManager.getConnection("jdbc:mysql://127.0.0.1/", "root" , "I$%luve#ya19!");
+			// Erstelle ein Objekt von Statement um Anfragen an die Datenbank stellen zu können.
+			Statement myStmt= myCon.createStatement();
+			// Speicher die Resultate der Anfrage in ein ResultSet-Objekt
+			ResultSet result = myStmt.executeQuery("SELECT * FROM auth.account");
+			// Lies aus der Liste alle Elemente und gib sie aus!
+			while (result.next()) {
+				// Konvertiere die Elemente aus dem ResultSet in ein String.
+				System.out.println("ID: " + result.getString("id"));
+			}
+			// Schließe die Verbindung wieder. (Nicht nötig, wenn eine dauerhafte Verbindung notwendig ist.)
+			myCon.close();
+		}
+		catch (Exception sqlEx)
+		{
+			System.err.println(sqlEx);
+		}
+	}
+	
 	public NewJFrame() {
 		super();
+		super.setLocationRelativeTo(null);
+		super.setVisible(true);
 		super.setTitle("Pizzalieferant GUI");
+		super.setResizable(false);
 		initGUI();
 	}
-
+	
 	private void initGUI() {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -84,24 +90,25 @@ public class NewJFrame extends javax.swing.JFrame {
 					upperMainPanel.add(kundenPanel);
 					kundenPanel.setBackground(new java.awt.Color(255,217,120));
 				}
-				{ 	// Erstellen des Reiter-Panes
+				{ 	
+					// Erstellen des Reiter-Panes
 					bestellungsTPane = new JTabbedPane();
 					upperMainPanel.add(bestellungsTPane);
-					{	// Erstellen des Tabs 'Aktuelle Bestellungen:'
-
+					{	
+						// Erstellen des Tabs 'Aktuelle Bestellungen:'
 						ListModel akt_BesteListe = new DefaultComboBoxModel
 						(new String[] { "Pizza Avanti", "Pizza Alegro" });
-
+						
 						akt_Bestellungen = new JList();
 						bestellungsTPane.addTab("Aktuelle Bestellungen:", null, akt_Bestellungen, null);
 						akt_Bestellungen.setModel(akt_BesteListe);
 						akt_Bestellungen.setSelectedIndex(1);
 					}
-					{	// Erstellen des Tabs 'Vorherige Bestellungen:'
-
+					{	
+						// Erstellen des Tabs 'Vorherige Bestellungen:'
 						ListModel vorh_BesteListe = new DefaultComboBoxModel
 						(new String[] { "Pizza Antonio", "Pizza Pasta" });
-
+						
 						vorh_Bestellungen = new JList();
 						bestellungsTPane.addTab("Vorherige Bestellungen:",null, vorh_Bestellungen, null);
 						vorh_Bestellungen.setModel(vorh_BesteListe);
@@ -116,11 +123,12 @@ public class NewJFrame extends javax.swing.JFrame {
 				lowerMainPanel.setPreferredSize(new java.awt.Dimension(790, 157));
 			}
 			pack();
+			this.setLocation(this.getWidth()-225, this.getHeight()-100); // Setze die GUI in die Mitte des Bildschirms.
 			this.setSize(800, 600);
 		} catch (Exception e) {
-		    //add your error handling code here
 			e.printStackTrace();
 		}
+		sql_test(); 
 	}
 
 }
