@@ -45,7 +45,7 @@ public class NewJFrame extends javax.swing.JFrame {
 			// Baue eine neue Instanz des MYSQL-Treibers auf.
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			// Verbinde, mit Hilfe des Treibers, das Programm mit der Datenbank
-			Connection myCon = DriverManager.getConnection("jdbc:mysql://127.0.0.1/", "root" , "I$%luve#ya19!");
+			Connection myCon = DriverManager.getConnection("jdbc:mysql://127.0.0.1/", "root", "test"); // Hier kommmt es zur einer Exception durch das Password... Keine Ahnung warum.
 			// Erstelle ein Objekt von Statement um Anfragen an die Datenbank stellen zu können.
 			Statement myStmt= myCon.createStatement();
 			// Speicher die Resultate der Anfrage in ein ResultSet-Objekt
