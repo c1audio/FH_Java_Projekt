@@ -7,27 +7,15 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListModel;
 import javax.swing.WindowConstants;
 
-import java.sql.*; // Eingefügt für späteren Gebrauch.
+import java.sql.*; // Eingefï¿½gt fï¿½r spï¿½teren Gebrauch.
 
 
-/**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
 public class NewJFrame extends javax.swing.JFrame {
 
 
 	private static final long serialVersionUID = 1L; // Stellt eine Compilerwarnung ab.
 	
-	// Erstellen aller benötigten Objekte für die GUI.
+	// Erstellen aller benï¿½tigten Objekte fï¿½r die GUI.
 	
 	private JPanel upperMainPanel;
 	private JPanel kundenPanel;
@@ -36,9 +24,9 @@ public class NewJFrame extends javax.swing.JFrame {
 	private JList akt_Bestellungen;
 	private JList vorh_Bestellungen;
 
-	public static void main(String[] args) {
-		new NewJFrame();
-	}
+	//public static void main(String[] args) {
+	//	new NewJFrame();
+	//}
 	
 	public void sql_test() {
 		try {
@@ -46,7 +34,7 @@ public class NewJFrame extends javax.swing.JFrame {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			// Verbinde, mit Hilfe des Treibers, das Programm mit der Datenbank
 			Connection myCon = DriverManager.getConnection("jdbc:mysql://127.0.0.1/", "root", "test"); // Hier kommmt es zur einer Exception durch das Password... Keine Ahnung warum.
-			// Erstelle ein Objekt von Statement um Anfragen an die Datenbank stellen zu können.
+			// Erstelle ein Objekt von Statement um Anfragen an die Datenbank stellen zu kï¿½nnen.
 			Statement myStmt= myCon.createStatement();
 			// Speicher die Resultate der Anfrage in ein ResultSet-Objekt
 			ResultSet result = myStmt.executeQuery("SELECT * FROM auth.account");
@@ -55,7 +43,7 @@ public class NewJFrame extends javax.swing.JFrame {
 				// Konvertiere die Elemente aus dem ResultSet in ein String.
 				System.out.println("ID: " + result.getString("id"));
 			}
-			// Schließe die Verbindung wieder. (Nicht nötig, wenn eine dauerhafte Verbindung notwendig ist.)
+			// Schlieï¿½e die Verbindung wieder. (Nicht nï¿½tig, wenn eine dauerhafte Verbindung notwendig ist.)
 			myCon.close();
 		}
 		catch (Exception sqlEx)
