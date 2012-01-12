@@ -1,5 +1,5 @@
 /* 
-Das ist unsere Platform in der wir Das Java-Projekt für die FH fertigstellen!
+Das ist unsere Platform in der wir das Java-Projekt für die FH fertigstellen!
 Beachtet, solltet ihr eure Arbeit hochladen, dass ihr vorher guckt ob jemand vor euch etwas in einer Datei verändert hat in der ihr arbeitet.
 Vor dem Hochladen solltet ihr also eure Arbeit mit der neuen Datei zusammenführen um so die Arbeit vom Vorgänger nicht zu überschreiben!
 
@@ -14,7 +14,7 @@ Claudio:
 
 Dennis:
 
-~ Allgemein: Einbinden der SQL-Schnittstelle und einbauen von Schnittstellen zur GUI.
++ Allgemein: Einbinden der SQL-Schnittstelle und einbauen von Schnittstellen zur GUI.
 
 ~ Bestellungspanel: Aufbau des Bestellungspanels.
 * Bestellungspanel: Funktionen für die Benutzeraktionen einfügen.

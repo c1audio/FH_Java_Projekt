@@ -2,22 +2,25 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import Tools.MYSQL; // Eigenes SQL-Interface, Rückgabe von Ergebnissen wird eine ArrayList sein!
 
-public class PizzaGUI extends JFrame implements ActionListener{
+
+public class PizzaGUI extends JFrame implements ActionListener
+{
 	private static final long serialVersionUID = 1L;
 	
 	MYSQL sqlHandling = new MYSQL();
@@ -40,10 +43,14 @@ public class PizzaGUI extends JFrame implements ActionListener{
 	
 	private JList akt_Bestellungen;
 	private JList vorh_Bestellungen;
-	
+
+
 	private JTextField feldAbrechnung;
 
 	private JButton knopfAbrechnen;
+	
+	private JScrollPane scroll_akt_b;
+	private JScrollPane scroll_vorh_b;
 	
 	/*######################################################KundenPanelKomponenten
 	/**/ private JTextField feldKundeSuchen;
@@ -71,6 +78,7 @@ public class PizzaGUI extends JFrame implements ActionListener{
 
 	PizzaGUI()
 	{
+		
 		panelUpperMain = new JPanel();
 		panelUpperMain.setLayout(new GridLayout(1,5,2,5));
 				
@@ -106,6 +114,7 @@ public class PizzaGUI extends JFrame implements ActionListener{
 		feldAbrechnung = new JTextField("50 EURO");
 		
 		knopfAbrechnen = new JButton("Abrechnen");
+		knopfAbrechnen.addActionListener(this);
 		
 		
 		tPaneBestellung.add(tabAktuelleBestellung, "Aktuelle Bestellung");
@@ -122,14 +131,17 @@ public class PizzaGUI extends JFrame implements ActionListener{
 		tPaneArtikelDetails.add(tabPizzaDetails, "Pizza");
 		tPaneArtikelDetails.add(tabNudelDetails, "Nudeln");
 		tPaneArtikelDetails.add(tabSalatDetails, "Salat");
-		tPaneArtikelDetails.add(tabGetraenkeDetails, "GetrÃ¤nke");
+		tPaneArtikelDetails.add(tabGetraenkeDetails, "Getränke");
 		
 		abrechnungsPanel.add(feldAbrechnung);
 		abrechnungsPanel.add(knopfAbrechnen);
 		
-		tabAktuelleBestellung.add(akt_Bestellungen,BorderLayout.CENTER);
+		scroll_akt_b = new JScrollPane (akt_Bestellungen);
+		scroll_vorh_b = new JScrollPane (vorh_Bestellungen);
+		
+		tabAktuelleBestellung.add(scroll_akt_b,BorderLayout.CENTER);
 		tabAktuelleBestellung.add(abrechnungsPanel, BorderLayout.SOUTH);
-		tabVorherigeBestellung.add(vorh_Bestellungen, BorderLayout.CENTER);
+		tabVorherigeBestellung.add(scroll_vorh_b, BorderLayout.CENTER);
 		
 		setSize(800,600);
 		setTitle("PizzaLieferant");
@@ -180,27 +192,52 @@ public class PizzaGUI extends JFrame implements ActionListener{
 		tabKundeSuchen.add(panelKundenNord, BorderLayout.NORTH);
 		tabKundeSuchen.add(panelKundenCenter, BorderLayout.CENTER);
 		tabKundeSuchen.add(panelKundenSued, BorderLayout.SOUTH);
+
+		initBestellungsPanel(); // Eingefügt für Testzwecke bezüglich MYSQL.request();
 	}
 	
 	public void initKundenPanel()
-	{
+	{		
 		
 	}
 	
-	public void actionPerformed(ActionEvent arg0) {
+	public void initBestellungsPanel()
+	{
+
+		ArrayList<String> results = sqlHandling.request("SELECT `mapid`,`comment`  FROM world.access_requirement");
+		
+		if(results==null)
+		{
+			System.out.println("Fehler bei Abfrage aufgetreten!");
+			return;
+		}
+		
+		System.out.println("Erfolgreich!");
+		
+		DefaultListModel model = new DefaultListModel();
+		
+		for (int rowcount=0;rowcount<results.size();rowcount++)
+		{
+			model.addElement(results.get(rowcount));
+		}
+		this.akt_Bestellungen.setModel(model);
+	}
+	
+	public void actionPerformed(ActionEvent arg0) 
+	{
+		
 		String abfrage = arg0.getActionCommand();
 		
-		if(abfrage=="OK")
+		if (abfrage=="Abrechnen")
 		{
-			
-		}
+			JOptionPane.showMessageDialog(this, "Abrechnen noch nicht verfügbar!","Pizzalieferant",JOptionPane.ERROR_MESSAGE);
+			return;
+		}	
 	}
 
 	public static void main(String[]args)
-	
 	{
 		new PizzaGUI();
 	}
-	
 	
 }
