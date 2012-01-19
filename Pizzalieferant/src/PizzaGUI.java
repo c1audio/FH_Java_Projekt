@@ -3,7 +3,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -204,7 +203,7 @@ public class PizzaGUI extends JFrame implements ActionListener
 	public void initBestellungsPanel()
 	{
 
-		ArrayList<String> results = sqlHandling.request("SELECT `mapid`,`comment`  FROM world.access_requirement");
+		ArrayList<String[]> results = sqlHandling.request("SELECT `mapid`,`comment`  FROM world.access_requirement");
 		
 		if(results==null)
 		{
@@ -218,7 +217,7 @@ public class PizzaGUI extends JFrame implements ActionListener
 		
 		for (int rowcount=0;rowcount<results.size();rowcount++)
 		{
-			model.addElement(results.get(rowcount));
+			model.addElement(sqlHandling.Star_to_St(results.get(rowcount)));
 		}
 		this.akt_Bestellungen.setModel(model);
 	}
@@ -234,10 +233,9 @@ public class PizzaGUI extends JFrame implements ActionListener
 			return;
 		}	
 	}
-
+	
 	public static void main(String[]args)
 	{
 		new PizzaGUI();
-	}
-	
+	}	
 }
