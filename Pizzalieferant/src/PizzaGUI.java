@@ -14,6 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import Tools.MYSQL; // Eigenes SQL-Interface, Rückgabe von Ergebnissen wird eine ArrayList sein!
 
@@ -77,6 +80,36 @@ public class PizzaGUI extends JFrame implements ActionListener
 
 	PizzaGUI()
 	{
+		// Menubar Items
+		JMenuBar pizza_bar = new JMenuBar();
+		JMenu datei, extras, hilfe;
+		JMenuItem datei_ende;
+		JMenuItem extras_einstlg;
+		JMenuItem hilfe_info;
+		
+		datei = new JMenu("Datei");
+		{
+			datei_ende = new JMenuItem("Beenden");
+			datei.add(datei_ende);
+		}
+		extras = new JMenu("Extras");
+		{
+			extras_einstlg = new JMenuItem("Einstellungen");
+			extras.add(extras_einstlg);
+		}
+		hilfe = new JMenu("Hilfe");
+		{
+			hilfe_info = new JMenuItem("Über");
+			hilfe.add(hilfe_info);
+		}
+
+		pizza_bar.add(datei);
+		pizza_bar.add(extras);
+		pizza_bar.add(hilfe);
+		
+		this.setJMenuBar(pizza_bar);
+		
+		// Baue das Main-Grid auf.
 		
 		panelUpperMain = new JPanel();
 		panelUpperMain.setLayout(new GridLayout(1,5,2,5));
@@ -110,11 +143,11 @@ public class PizzaGUI extends JFrame implements ActionListener
 		akt_Bestellungen = new JList();
 		vorh_Bestellungen =new JList();
 		
-		feldAbrechnung = new JTextField("50 EURO");
+		feldAbrechnung = new JTextField();
+		feldAbrechnung.setEditable(false);
 		
 		knopfAbrechnen = new JButton("Abrechnen");
 		knopfAbrechnen.addActionListener(this);
-		
 		
 		tPaneBestellung.add(tabAktuelleBestellung, "Aktuelle Bestellung");
 		tPaneBestellung.add(tabVorherigeBestellung, "Vorherige Bestellung");
@@ -202,24 +235,18 @@ public class PizzaGUI extends JFrame implements ActionListener
 	
 	public void initBestellungsPanel()
 	{
-
-		ArrayList<String[]> results = sqlHandling.request("SELECT `mapid`,`comment`  FROM world.access_requirement");
 		
-		if(results==null)
-		{
-			System.out.println("Fehler bei Abfrage aufgetreten!");
-			return;
-		}
+		DefaultListModel akt_Best_model = new DefaultListModel();
+		DefaultListModel vorh_Best_model = new DefaultListModel();
 		
-		System.out.println("Erfolgreich!");
+		akt_Best_model.addElement("1: Testpizza");
 		
-		DefaultListModel model = new DefaultListModel();
+		vorh_Best_model.addElement("1: Testnudel");
+		vorh_Best_model.addElement("2: Testsalat");
 		
-		for (int rowcount=0;rowcount<results.size();rowcount++)
-		{
-			model.addElement(sqlHandling.Star_to_St(results.get(rowcount)));
-		}
-		this.akt_Bestellungen.setModel(model);
+		this.akt_Bestellungen.setModel(akt_Best_model);
+		this.vorh_Bestellungen.setModel(vorh_Best_model);
+		
 	}
 	
 	public void actionPerformed(ActionEvent arg0) 

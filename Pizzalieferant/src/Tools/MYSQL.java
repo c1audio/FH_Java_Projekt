@@ -48,7 +48,7 @@ public class MYSQL
  * ArrayList<String[]> request(String Statement)
  * 
  * @category getter 
- * @param	statement Hier gibt man die Vollständige SQL-Abfrage ein! (Bsp: "SELECT * FROM Test");
+ * @param	statement - Hier gibt man die Vollständige SQL-Abfrage ein! (Bsp: "SELECT * FROM Test");
  * @return	null oder eine ArrayList vom Typ String mit allen Resultaten der Abfrage.
  */
 	
