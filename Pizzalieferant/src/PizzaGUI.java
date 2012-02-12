@@ -1,8 +1,26 @@
+/**
+ * Eine Benutzeroberfläche für den Geschäftsbereich "Pizzalieferant"
+ * Erleichtert das Verwalten von Kunden, ihrer Bestellungen, sowie ihrer Daten.
+ * 
+ * Erlaubt das Manipulieren von Kundendaten, Aufnehmen von Bestellungen,
+ * Suchen von Kunden in der Datenbank, Importierung vorheriger Bestellung.
+ * 
+ * 
+ * TODO Kundenpanel, Gerichtepanel, Datenbank
+ * 
+ * 
+ * @author Claudio Bianucci, Sylo ???, Adiran Gutierrez, Dennis Natanzon
+ * @version 0.3
+ * 
+ */
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseAdapter;
+import java.util.ArrayList; // Eingefügt für späteren Gebrauch!
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,15 +35,16 @@ import javax.swing.WindowConstants;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
-import Tools.MYSQL; // Eigenes SQL-Interface, Rückgabe von Ergebnissen wird eine ArrayList sein!
+import Tools.MYSQL; // Eigenes SQL-Interface, Rückgabe von Ergebnissen ist eine ArrayList, welche String-Arrays enthält!
 
 
 public class PizzaGUI extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 	
-	MYSQL sqlHandling = new MYSQL();
+	MYSQL sql = new MYSQL();
 	
 	private JPanel panelUpperMain;
 	private JPanel panelMainLower;
@@ -76,11 +95,12 @@ public class PizzaGUI extends JFrame implements ActionListener
 	/**/ 
 	/**/ 
 	
-	
+	private JPopupMenu pizza_popup;
 
 	PizzaGUI()
 	{
 		// Menubar Items
+		
 		JMenuBar pizza_bar = new JMenuBar();
 		JMenu datei, extras, hilfe;
 		JMenuItem datei_ende;
@@ -109,6 +129,10 @@ public class PizzaGUI extends JFrame implements ActionListener
 		
 		this.setJMenuBar(pizza_bar);
 		
+		// PopupMenu
+		
+		pizza_popup = new JPopupMenu();
+
 		// Baue das Main-Grid auf.
 		
 		panelUpperMain = new JPanel();
@@ -141,7 +165,23 @@ public class PizzaGUI extends JFrame implements ActionListener
 		tPaneArtikelDetails = new JTabbedPane();
 		
 		akt_Bestellungen = new JList();
+		akt_Bestellungen.setName("akt_Bestellungen");
+		akt_Bestellungen.setSelectionMode(0);
 		vorh_Bestellungen =new JList();
+		vorh_Bestellungen.setSelectionMode(0);
+		vorh_Bestellungen.setName("vorh_Bestellungen");
+		
+		MouseListener m_listener = new MouseAdapter()
+		{
+			public void mouseReleased (MouseEvent event)
+			{
+				if (event.getSource().toString().contains("akt_Bestellungen")) best_Listener(akt_Bestellungen, event);
+				else best_Listener(vorh_Bestellungen, event);
+			}
+		};
+		
+		akt_Bestellungen.addMouseListener(m_listener);
+		vorh_Bestellungen.addMouseListener(m_listener);
 		
 		feldAbrechnung = new JTextField();
 		feldAbrechnung.setEditable(false);
@@ -175,14 +215,14 @@ public class PizzaGUI extends JFrame implements ActionListener
 		tabAktuelleBestellung.add(abrechnungsPanel, BorderLayout.SOUTH);
 		tabVorherigeBestellung.add(scroll_vorh_b, BorderLayout.CENTER);
 		
-		setSize(800,600);
-		setTitle("PizzaLieferant");
-		setVisible(true);
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setLayout(new BorderLayout());
+		this.setSize(800,600);
+		this.setTitle("PizzaLieferant");
+		this.setVisible(true);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		this.setLayout(new BorderLayout());
 		
-		add(panelUpperMain, BorderLayout.CENTER);
-		add(panelMainLower, BorderLayout.SOUTH);
+		this.add(panelUpperMain, BorderLayout.CENTER);
+		this.add(panelMainLower, BorderLayout.SOUTH);
 		
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -228,41 +268,73 @@ public class PizzaGUI extends JFrame implements ActionListener
 		initBestellungsPanel(); // Eingefügt für Testzwecke bezüglich MYSQL.request();
 	}
 	
-	public void initKundenPanel()
+	public void initKundenPanel ()
 	{		
 		
 	}
 	
-	public void initBestellungsPanel()
+	public void initBestellungsPanel ()
 	{
 		
 		DefaultListModel akt_Best_model = new DefaultListModel();
 		DefaultListModel vorh_Best_model = new DefaultListModel();
 		
+		
 		akt_Best_model.addElement("1: Testpizza");
+		akt_Best_model.addElement("2: Testtrinken");
 		
 		vorh_Best_model.addElement("1: Testnudel");
 		vorh_Best_model.addElement("2: Testsalat");
+		
 		
 		this.akt_Bestellungen.setModel(akt_Best_model);
 		this.vorh_Bestellungen.setModel(vorh_Best_model);
 		
 	}
 	
-	public void actionPerformed(ActionEvent arg0) 
+	public void actionPerformed (ActionEvent event) 
 	{
 		
-		String abfrage = arg0.getActionCommand();
+		String abfrage = event.getActionCommand();
 		
 		if (abfrage=="Abrechnen")
 		{
 			JOptionPane.showMessageDialog(this, "Abrechnen noch nicht verfügbar!","Pizzalieferant",JOptionPane.ERROR_MESSAGE);
-			return;
-		}	
+		} else if (abfrage=="Entfernen")
+		{
+			JOptionPane.showMessageDialog(this, "Gelöscht! (Debug-Nachricht)", "Pizzalieferant",JOptionPane.INFORMATION_MESSAGE);
+		} else if (abfrage=="Hinzufügen")
+		{
+			JOptionPane.showMessageDialog(this, "Hinzugefügt! (Debug-Nachricht)", "Pizzalieferant",JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 	
-	public static void main(String[]args)
+	public void best_Listener (JList list, MouseEvent event)
+	{
+		
+		list.setSelectedIndex(list.locationToIndex(event.getPoint()));
+		System.out.println("In " + list.getName() + " wurde das Element " + list.getSelectedIndex() + " ausgewählt.");
+		pizza_popup.removeAll();
+		
+		if(list.getName()=="akt_Bestellungen" && event.isPopupTrigger())
+		{
+			JMenuItem akt_entf = new JMenuItem("Entfernen");
+			akt_entf.addActionListener(this);
+			pizza_popup.add(akt_entf);
+			pizza_popup.show(event.getComponent(), event.getX(), event.getY());
+		} 
+		else if (list.getName()=="vorh_Bestellungen" && event.isPopupTrigger())
+		{
+			JMenuItem vorh_hinzfg = new JMenuItem("Hinzufügen");
+			vorh_hinzfg.addActionListener(this);
+			pizza_popup.add(vorh_hinzfg);
+			pizza_popup.show(event.getComponent(), event.getX(), event.getY());
+		}
+	}
+	
+	public static void main (String[]args)
 	{
 		new PizzaGUI();
-	}	
+	}
+
 }
