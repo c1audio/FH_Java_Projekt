@@ -1,5 +1,5 @@
 /**
- * Eine Benutzeroberfläche für den Geschäftsbereich "Pizzalieferant"
+ * Eine Benutzeroberflï¿½che fï¿½r den Geschï¿½ftsbereich "Pizzalieferant"
  * Erleichtert das Verwalten von Kunden, ihrer Bestellungen, sowie ihrer Daten.
  * 
  * Erlaubt das Manipulieren von Kundendaten, Aufnehmen von Bestellungen,
@@ -9,7 +9,7 @@
  * TODO Kundenpanel, Gerichtepanel, Datenbank
  * 
  * 
- * @author Claudio Bianucci, Sylo ???, Adiran Gutierrez, Dennis Natanzon
+ * @author Claudio Bianucci, SÃ¼lo Gemici, Adiran Gutierrez, Dennis Natanzon
  * @version 0.3
  * 
  */
@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseAdapter;
-import java.util.ArrayList; // Eingefügt für späteren Gebrauch!
+import java.util.ArrayList; // Eingefï¿½gt fï¿½r spï¿½teren Gebrauch!
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,7 +37,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import Tools.MYSQL; // Eigenes SQL-Interface, Rückgabe von Ergebnissen ist eine ArrayList, welche String-Arrays enthält!
+import Tools.MYSQL; // Eigenes SQL-Interface, Rï¿½ckgabe von Ergebnissen ist eine ArrayList, welche String-Arrays enthï¿½lt!
 
 
 public class PizzaGUI extends JFrame implements ActionListener
@@ -48,8 +48,6 @@ public class PizzaGUI extends JFrame implements ActionListener
 	
 	private JPanel panelUpperMain;
 	private JPanel panelMainLower;
-	private JPanel tabKundeSuchen;
-	private JPanel tabNeuerKunde;
 	private JPanel tabPizzaDetails;
 	private JPanel tabNudelDetails;
 	private JPanel tabSalatDetails;
@@ -58,7 +56,8 @@ public class PizzaGUI extends JFrame implements ActionListener
 	private JPanel tabVorherigeBestellung;
 	private JPanel abrechnungsPanel;
 	
-	private JTabbedPane tPaneKunden;
+	private KundenVerwaltung tPaneKunden; ////////GEÃ„NDERTTTTTT///////////////
+	private ZutatenVerwaltung tPaneZutaten;
 	private JTabbedPane tPaneBestellung;
 	private JTabbedPane tPaneArtikelDetails;
 	
@@ -72,28 +71,6 @@ public class PizzaGUI extends JFrame implements ActionListener
 	
 	private JScrollPane scroll_akt_b;
 	private JScrollPane scroll_vorh_b;
-	
-	/*######################################################KundenPanelKomponenten
-	/**/ private JTextField feldKundeSuchen;
-	/**/ private JList listeKundenErgebnisse;
-	/**/ 
-	/**/ private JPanel panelKundenDaten;
-	/**/ private JPanel panelDeklKundenLabel;
-	/**/ private JPanel panelKundenNord;
-	/**/ private JPanel panelKundenSued;
-	/**/ private JPanel panelKundenCenter;
-	/**/ 
-	/**/ private JLabel labelName;
-	/**/ private JLabel labelTelefonnr;
-	/**/ private JLabel labelStrasse;
-	/**/ private JLabel labelOrt;
-	/**/ 
-	/**/ private JLabel labelDeklName;
-	/**/ private JLabel labelDeklTelefonnr;
-	/**/ private JLabel labelDeklStrasse;
-	/**/ private JLabel labelDeklOrt;
-	/**/ 
-	/**/ 
 	
 	private JPopupMenu pizza_popup;
 
@@ -119,7 +96,7 @@ public class PizzaGUI extends JFrame implements ActionListener
 		}
 		hilfe = new JMenu("Hilfe");
 		{
-			hilfe_info = new JMenuItem("Über");
+			hilfe_info = new JMenuItem("ï¿½ber");
 			hilfe.add(hilfe_info);
 		}
 
@@ -141,10 +118,6 @@ public class PizzaGUI extends JFrame implements ActionListener
 		panelMainLower = new JPanel();
 		panelMainLower.setLayout(new BorderLayout());
 		
-		tabKundeSuchen = new JPanel();
-		tabKundeSuchen.setLayout(new BorderLayout());
-		tabNeuerKunde = new JPanel();
-		
 		tabPizzaDetails = new JPanel();
 		tabNudelDetails  = new JPanel();
 		tabSalatDetails = new JPanel();
@@ -160,7 +133,8 @@ public class PizzaGUI extends JFrame implements ActionListener
 		tabVorherigeBestellung.setLayout(new BorderLayout());
 		
 		
-		tPaneKunden = new JTabbedPane();
+		tPaneKunden = new KundenVerwaltung();   ////GEÃ„NDERTTT/////
+		tPaneZutaten= new ZutatenVerwaltung(); ////GEÃ„NDERTTT/////
 		tPaneBestellung = new JTabbedPane();
 		tPaneArtikelDetails = new JTabbedPane();
 		
@@ -192,18 +166,20 @@ public class PizzaGUI extends JFrame implements ActionListener
 		tPaneBestellung.add(tabAktuelleBestellung, "Aktuelle Bestellung");
 		tPaneBestellung.add(tabVorherigeBestellung, "Vorherige Bestellung");
 		
-		tPaneKunden.add(tabKundeSuchen, "Kunde Suchen");
-		tPaneKunden.add(tabNeuerKunde, "Neuer Kunde");
-		
 		panelUpperMain.add(tPaneKunden);
 		panelUpperMain.add(tPaneBestellung);
 		
-		panelMainLower.add(tPaneArtikelDetails, BorderLayout.CENTER);
+		/////////////////////////////////////////////////////////////////////
+		//panelMainLower.add(tPaneArtikelDetails, BorderLayout.CENTER);
+		tPaneZutaten.setSize(795, 200);
+		tPaneZutaten.setPreferredSize(tPaneZutaten.getSize());
+		panelMainLower.add(tPaneZutaten, BorderLayout.CENTER);
+		//////////////////////////////////////////////////////////////GEÃ„NDERT
 		
 		tPaneArtikelDetails.add(tabPizzaDetails, "Pizza");
 		tPaneArtikelDetails.add(tabNudelDetails, "Nudeln");
 		tPaneArtikelDetails.add(tabSalatDetails, "Salat");
-		tPaneArtikelDetails.add(tabGetraenkeDetails, "Getränke");
+		tPaneArtikelDetails.add(tabGetraenkeDetails, "Getrï¿½nke");
 		
 		abrechnungsPanel.add(feldAbrechnung);
 		abrechnungsPanel.add(knopfAbrechnen);
@@ -223,49 +199,11 @@ public class PizzaGUI extends JFrame implements ActionListener
 		
 		this.add(panelUpperMain, BorderLayout.CENTER);
 		this.add(panelMainLower, BorderLayout.SOUTH);
+				
 		
-		
-		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		feldKundeSuchen = new JTextField();
-		listeKundenErgebnisse = new JList();
-		
-		panelKundenDaten = new JPanel();
-		panelDeklKundenLabel = new JPanel();
-		panelKundenNord = new JPanel();
-		panelKundenCenter = new JPanel();
-		panelKundenSued = new JPanel();
-		
-		labelName= new JLabel("");
-		labelTelefonnr= new JLabel("") ;
-		labelStrasse = new JLabel("");
-		labelOrt = new JLabel("");
-		 
-		labelDeklName = new JLabel("Name:");
-		labelDeklTelefonnr = new JLabel("Tel:");
-		labelDeklStrasse = new JLabel("Str:");
-		labelDeklOrt = new JLabel("Ort:");
-		
-		panelKundenDaten.add(labelTelefonnr);
-		panelKundenDaten.add(labelName);
-		panelKundenDaten.add(labelStrasse);
-		panelKundenDaten.add(labelOrt);
-		
-		panelDeklKundenLabel.add(labelDeklTelefonnr);
-		panelDeklKundenLabel.add(labelDeklName);
-		panelDeklKundenLabel.add(labelDeklStrasse);
-		panelDeklKundenLabel.add(labelDeklOrt);
-		
-		panelKundenNord.add(feldKundeSuchen);
-		panelKundenSued.add(panelKundenDaten);
-		panelKundenSued.add(panelDeklKundenLabel);
-		panelKundenCenter.add(listeKundenErgebnisse);
+	
 
-		tabKundeSuchen.add(panelKundenNord, BorderLayout.NORTH);
-		tabKundeSuchen.add(panelKundenCenter, BorderLayout.CENTER);
-		tabKundeSuchen.add(panelKundenSued, BorderLayout.SOUTH);
-
-		initBestellungsPanel(); // Eingefügt für Testzwecke bezüglich MYSQL.request();
+		initBestellungsPanel(); // Eingefï¿½gt fï¿½r Testzwecke bezï¿½glich MYSQL.request();
 	}
 	
 	public void initKundenPanel ()
@@ -299,13 +237,13 @@ public class PizzaGUI extends JFrame implements ActionListener
 		
 		if (abfrage=="Abrechnen")
 		{
-			JOptionPane.showMessageDialog(this, "Abrechnen noch nicht verfügbar!","Pizzalieferant",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Abrechnen noch nicht verfÃ¼gbar!","Pizzalieferant",JOptionPane.ERROR_MESSAGE);
 		} else if (abfrage=="Entfernen")
 		{
-			JOptionPane.showMessageDialog(this, "Gelöscht! (Debug-Nachricht)", "Pizzalieferant",JOptionPane.INFORMATION_MESSAGE);
-		} else if (abfrage=="Hinzufügen")
+			JOptionPane.showMessageDialog(this, "GelÃ¶scht! (Debug-Nachricht)", "Pizzalieferant",JOptionPane.INFORMATION_MESSAGE);
+		} else if (abfrage=="HinzufÃ¼gen")
 		{
-			JOptionPane.showMessageDialog(this, "Hinzugefügt! (Debug-Nachricht)", "Pizzalieferant",JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, "HinzugefÃ¼gt! (Debug-Nachricht)", "Pizzalieferant",JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
@@ -313,7 +251,7 @@ public class PizzaGUI extends JFrame implements ActionListener
 	{
 		
 		list.setSelectedIndex(list.locationToIndex(event.getPoint()));
-		System.out.println("In " + list.getName() + " wurde das Element " + list.getSelectedIndex() + " ausgewählt.");
+		System.out.println("In " + list.getName() + " wurde das Element " + list.getSelectedIndex() + " ausgewï¿½hlt.");
 		pizza_popup.removeAll();
 		
 		if(list.getName()=="akt_Bestellungen" && event.isPopupTrigger())
@@ -325,7 +263,7 @@ public class PizzaGUI extends JFrame implements ActionListener
 		} 
 		else if (list.getName()=="vorh_Bestellungen" && event.isPopupTrigger())
 		{
-			JMenuItem vorh_hinzfg = new JMenuItem("Hinzufügen");
+			JMenuItem vorh_hinzfg = new JMenuItem("Hinzufï¿½gen");
 			vorh_hinzfg.addActionListener(this);
 			pizza_popup.add(vorh_hinzfg);
 			pizza_popup.show(event.getComponent(), event.getX(), event.getY());
